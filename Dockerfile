@@ -24,5 +24,10 @@ RUN ln -s /bin/true /sbin/systemctl
 # ^^ https://stackoverflow.com/questions/66095192/run-in-dockerfile-with-systemd-as-pid-1
 RUN systemctl start docker && systemctl enable docker && systemctl restart docker
 RUN SSIS_PID=Developer ACCEPT_EULA=Y /opt/ssis/bin/ssis-conf -n setup
-# b.2.x - SSH
+# b.2.x - SSH with default password "passwd"
 RUN apt -y install openssh-server
+RUN echo "root:passwd" | chpasswd
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+RUN systemctl ssh start && systemctl ssh enabled
+ENTRYPOINT /etc/init.d/ssh start && tail -F /bin/bash
+USER root
