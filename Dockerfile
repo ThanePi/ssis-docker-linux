@@ -24,3 +24,5 @@ RUN ln -s /bin/true /sbin/systemctl
 # ^^ https://stackoverflow.com/questions/66095192/run-in-dockerfile-with-systemd-as-pid-1
 RUN systemctl start docker && systemctl enable docker && systemctl restart docker
 RUN SSIS_PID=Developer ACCEPT_EULA=Y /opt/ssis/bin/ssis-conf -n setup
+# b.2.x - SSH
+RUN apt -y install openssh-server
